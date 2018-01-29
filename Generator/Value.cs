@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Generator
 {
-    public static class Value
+    public static class NewValue
     {
         private static readonly Random Rand = new Random();
 
