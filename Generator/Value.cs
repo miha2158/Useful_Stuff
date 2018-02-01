@@ -20,7 +20,7 @@ namespace Generator
         {
             var b = new byte[8];
             Rand.NextBytes(b);
-            return Math.Abs(BitConverter.ToInt64(b, 0));
+            return BitConverter.ToInt64(b, 0);
         }
         public static long Long(long max) => Long() % max;
         public static long Long(long min, long max) => Long() % (max - min) + min;

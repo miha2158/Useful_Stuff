@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Generator
 {
@@ -22,13 +23,7 @@ namespace Generator
             int y = array.GetLength(1);
 
             var result = (int[,]) array.Clone();
-
-            /*int[,] result = new int[x,y];
-
-            for (var i0 = 0; i0 < graph.GetLength(0); i0++)
-                for (var i1 = 0; i1 < graph.GetLength(1); i1++)
-                    result[i0, i1] = graph[i0, i1];*/
-
+            
             var switch0 = new Tuple<int, int>(NewValue.Int(x), NewValue.Int(x));
             var switch1 = new Tuple<int, int>(NewValue.Int(y), NewValue.Int(y));
 
@@ -48,8 +43,54 @@ namespace Generator
 
             return result;
         }
+        public static string ToString(this int[,] array, int startSpaces)
+        {
+            var result = string.Empty;
 
-        public static int IncreaseLinesLengthwise(this int[,] array,  int increaseByUpTo)
+            for (var i0 = 0; i0 < array.GetLength(0); i0++)
+            {
+                var r = string.Empty.PadLeft(startSpaces);
+                for (var i1 = 0; i1 < array.GetLength(1); i1++)
+                {
+                    r += $"{array[i0, i1]} ";
+                }
+
+                if (i0 + 1 != array.GetLength(0))
+                    result += r;
+                else
+                    result += r.TrimEnd();
+
+            }
+
+            return string.Empty;
+        }
+
+        public static T[] Fill<T>(int length, T fillValue) => Fill(new T[length], new Task<T>(() => fillValue));
+        public static T[] Fill<T>(int length, Task<T> fillValue) => Fill(new T[length], fillValue);
+        public static T[] Fill<T>(this T[] array, Task<T> fillValue)
+        {
+            var result = (T[])array.Clone();
+
+            for (var i0 = 0; i0 < result.Length; i0++)
+                    result[i0] = fillValue.Result;
+
+            return result;
+        }
+
+        public static T[,] Fill<T>(int length0, int length1, T fillValue) => Fill(new T[length0, length1], new Task<T>(() => fillValue));
+        public static T[,] Fill<T>(int length0, int length1, Task<T> fillValue) => Fill(new T[length0, length1], fillValue);
+        public static T[,] Fill<T>(this T[,] array, Task<T> fillValue)
+        {
+            var result = (T[,])array.Clone();
+
+            for (var i0 = 0; i0 < result.GetLength(0); i0++)
+                for (var i1 = 0; i1 < result.GetLength(1); i1++)
+                    result[i0, i1] = fillValue.Result;
+
+            return result;
+        }
+
+        public static int IncreaseColumns(this int[,] array,  int increaseByUpTo)
         {
             int x = array.GetLength(0);
             int y = array.GetLength(1);
@@ -57,7 +98,7 @@ namespace Generator
 
             for (var i0 = 0; i0 < x; i0++)
             {
-                var num1 = NewValue.Int();
+                var num1 = NewValue.Int(increaseByUpTo);
                 result += num1;
                 for (var i1 = 0; i1 < y; i1++)
                     array[i0, i1] += num1;
@@ -65,7 +106,7 @@ namespace Generator
 
             return result;
         }
-        public static int IncreaseLinesWidthwise(this int[,] array, int increaseByUpTo)
+        public static int IncreaseRows(this int[,] array, int increaseByUpTo)
         {
             int x = array.GetLength(0);
             int y = array.GetLength(1);
@@ -73,7 +114,7 @@ namespace Generator
 
             for (var i1 = 0; i1 < y; i1++)
             {
-                var num1 = NewValue.Int();
+                var num1 = NewValue.Int(increaseByUpTo);
                 result += num1;
                 for (var i0 = 0; i0 < x; i0++)
                     array[i0, i1] += num1;
@@ -83,8 +124,8 @@ namespace Generator
         }
         private static int IncreaseAll(this int[,] array, int eachIncreaseByUpTo)
         {
-            int result = array.IncreaseLinesLengthwise(eachIncreaseByUpTo);
-            result += array.IncreaseLinesWidthwise(eachIncreaseByUpTo);
+            int result = array.IncreaseColumns(eachIncreaseByUpTo);
+            result += array.IncreaseRows(eachIncreaseByUpTo);
 
             return result;
         }
