@@ -17,12 +17,12 @@ namespace Generator
             return graph;
         }
 
-        public static int[,] ShuffleArray(this int[,] array)
+        public static T[,] ShuffleArray<T>(this T[,] array)
         {
             int x = array.GetLength(0);
             int y = array.GetLength(1);
 
-            var result = (int[,]) array.Clone();
+            var result = (T[,]) array.Clone();
             
             var switch0 = new Tuple<int, int>(NewValue.Int(x), NewValue.Int(x));
             var switch1 = new Tuple<int, int>(NewValue.Int(y), NewValue.Int(y));
