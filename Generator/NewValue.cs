@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Generator
 {
@@ -14,7 +10,7 @@ namespace Generator
 
         public static int Int() => Rand.Next();
         public static int Int(int max) => Rand.Next(max);
-        public static int Int(int min, int max) => Rand.Next(min, max);
+        public static int Int(int min, int max) => min != max ? Rand.Next(min, max) : min;
 
         public static long Long()
         {
@@ -23,7 +19,7 @@ namespace Generator
             return BitConverter.ToInt64(b, 0);
         }
         public static long Long(long max) => Long() % max;
-        public static long Long(long min, long max) => Long() % (max - min) + min;
+        public static long Long(long min, long max) => min != max? Long() % (max - min) + min: min;
 
         public static DateTime NewDateTime(DateTime min, DateTime max) => new DateTime(Long(min.Ticks, max.Ticks));
     }
