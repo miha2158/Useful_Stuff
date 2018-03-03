@@ -65,5 +65,15 @@ namespace Generator
 
         public override string ToString() => $"{First} {Last}";
         public override int GetHashCode() => ToString().GetHashCode();
+        public override bool Equals(object obj)
+        {
+            var person = obj as Person;
+            return person != null &&
+                   First == person.First &&
+                   Last == person.Last;
+        }
+
+        public static bool operator ==(Person a, object b) => a != null && a.Equals(b);
+        public static bool operator !=(Person a, object b) => !(a == b);
     }
 }
